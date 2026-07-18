@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Api\Endpoint\" />
+      <Folder Include="Application\External\" />
+      <Folder Include="Application\Features\" />
+      <Folder Include="Domain\Constants\" />
+      <Folder Include="Domain\Entities\" />
+      <Folder Include="External\" />
+    </ItemGroup>
+
+</Project>
