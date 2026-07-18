@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "import-infrastructure-as-code": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "skillPath": "skills/import-infrastructure-as-code/SKILL.md",
+      "computedHash": "374b851dcf36c9239094fecea6b67a66962d0bd4dd59ff2c24bb1ad4064884b3"
+    },
+    "terraform-azurerm-set-diff-analyzer": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "skillPath": "skills/terraform-azurerm-set-diff-analyzer/SKILL.md",
+      "computedHash": "db4ccfecf95d4279085fa5d869585d4387484b414d892713a5499e651a47aa7c"
+    }
+  }
+}
