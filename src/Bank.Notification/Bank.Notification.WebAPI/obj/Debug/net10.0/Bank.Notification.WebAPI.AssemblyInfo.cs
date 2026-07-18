@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Bank.Notification.WebAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6fb65cb3c1be5fbcb847145b1a7ab244bd9bb23d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b3b792b24ed8a98988080940c5b5a10328ec545d")]
 [assembly: System.Reflection.AssemblyProductAttribute("Bank.Notification.WebAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Bank.Notification.WebAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

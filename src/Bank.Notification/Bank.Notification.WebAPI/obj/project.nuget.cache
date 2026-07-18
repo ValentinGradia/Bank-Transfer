@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "n0e+E1eOZSg=",
+  "dgSpecHash": "5ScoF99B4N4=",
   "success": true,
   "projectFilePath": "C:\\Users\\valen\\RiderProjects\\Bank\\src\\Bank.Notification\\Bank.Notification.WebAPI\\Bank.Notification.WebAPI.csproj",
   "expectedPackageFiles": [
@@ -10,24 +10,6 @@
     "C:\\Users\\valen\\.nuget\\packages\\system.text.json\\8.0.5\\system.text.json.8.0.5.nupkg.sha512"
   ],
   "logs": [
-    {
-      "code": "NU1801",
-      "level": "Warning",
-      "message": "The local source 'C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\' doesn't exist.",
-      "projectPath": "C:\\Users\\valen\\RiderProjects\\Bank\\src\\Bank.Notification\\Bank.Notification.WebAPI\\Bank.Notification.WebAPI.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\valen\\RiderProjects\\Bank\\src\\Bank.Notification\\Bank.Notification.WebAPI\\Bank.Notification.WebAPI.csproj",
-      "targetGraphs": []
-    },
-    {
-      "code": "NU1801",
-      "level": "Warning",
-      "message": "The local source 'C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\' doesn't exist.",
-      "projectPath": "C:\\Users\\valen\\RiderProjects\\Bank\\src\\Bank.Notification\\Bank.Notification.WebAPI\\Bank.Notification.WebAPI.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\valen\\RiderProjects\\Bank\\src\\Bank.Notification\\Bank.Notification.WebAPI\\Bank.Notification.WebAPI.csproj",
-      "targetGraphs": []
-    },
     {
       "code": "NU1903",
       "level": "Warning",
