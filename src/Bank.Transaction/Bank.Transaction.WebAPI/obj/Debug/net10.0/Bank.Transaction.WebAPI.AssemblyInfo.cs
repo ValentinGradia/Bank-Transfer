@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("79a3ecbe-9e55-46db-b80a-38a0117f9eb4")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Bank.Transaction.WebAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+17f5464dfeb28572a70f7f7a9bf56a1b587592fc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+14bef340f8962960154281423250cedf481e2db2")]
 [assembly: System.Reflection.AssemblyProductAttribute("Bank.Transaction.WebAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Bank.Transaction.WebAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

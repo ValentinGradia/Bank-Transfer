@@ -81,7 +81,7 @@ All apps share the same service plan (plan-apigateaway-centralus) and use nginx:
 
 The following resources are planned but not yet present in main.tf:
 
-- Service plan plan_deadletter — SKU: Y1/B1
+- Service plan plan_deadletter ï¿½ SKU: Y1/B1
 - Linux function app func-deadletter-centralus
 
 > These resources are **not active** and are not deployed.
@@ -110,3 +110,58 @@ terraform destroy
 ## Environment
 
 Test/development environment with free-tier resources and no always-on apps.
+
+## User Secrets
+
+All 5 microservices use .NET User Secrets to store sensitive Service Bus credentials outside of source code. The `secrets.json` file is stored locally at `%APPDATA%\microsoft\UserSecrets\<UserSecretsId>\secrets.json`.
+
+### UserSecretsId per Project
+
+| Project |
+|---------|
+| Bank.Transfer.WebAPI | 
+| Bank.Transaction.WebAPI | 
+| Bank.Balance.WebAPI | 
+| Bank.Gateway (WebApplication1) | 
+| Bank.Notification.WebAPI | 
+
+### Stored Secrets (same across all projects)
+
+| Key |
+|-----|
+| `SERVICEBUSCONSTR` | 
+| `SERVICEBUSTOPIC` | 
+
+### User Secrets CLI Commands
+
+All commands must be run from the project directory (where the `.csproj` is located):
+
+```bash
+# Initialize user secrets (generates UserSecretsId in .csproj)
+dotnet user-secrets init
+
+# Set a secret
+dotnet user-secrets set "KEY" "VALUE"
+
+# List all secrets
+dotnet user-secrets list
+
+# Remove a secret
+dotnet user-secrets remove "KEY"
+
+# Clear all secrets
+dotnet user-secrets clear
+```
+
+### Accessing Secrets in Code
+
+```csharp
+// In Program.cs - flat key access
+var serviceBusConnection = builder.Configuration["SERVICEBUSCONSTR"];
+var topicName = builder.Configuration["SERVICEBUSTOPIC"];
+
+// Or bind to a settings class
+builder.Services.Configure<ServiceBusSettings>(builder.Configuration);
+```
+
+> **Note:** `secrets.json` is only loaded automatically in the **Development** environment. For production, use Azure Key Vault, environment variables, or other secret management solutions.

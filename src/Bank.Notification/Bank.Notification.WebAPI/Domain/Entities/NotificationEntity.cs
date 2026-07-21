@@ -4,6 +4,8 @@ namespace Bank.Notification.WebAPI.Domain.Entities;
 
 //Al usar una bbdd no sql, especificamos las propiedades de la entidad con los atributos de JsonProperty para mapear correctamente los campos en la base de datos. Esto es especialmente útil para
 //mantener la consistencia entre el modelo de datos y la estructura de la base de datos, facilitando así las operaciones de lectura y escritura.
+
+//En cosmos db nos exige que las propiedades se guarden con la primer letra minususcula, por lo que usamos el atributo JsonProperty para mapear correctamente las propiedades de la entidad con los campos de la base de datos.
 public class NotificationEntity
 {
     [JsonProperty("id")]

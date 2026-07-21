@@ -1,41 +1,29 @@
+using Bank.Notification.WebAPI.Application.Database;
+using Bank.Notification.WebAPI.Domain.Entities;
+using Bank.Notification.WebAPI.Persistence;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Cosmos;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.MapGet("/notification", async ([FromServices] IDatabaseService databaseService) =>
 {
-    app.MapOpenApi();
-}
-
-app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
+    var entity = new NotificationEntity
     {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast");
+        CorrelationId = Guid.NewGuid().ToString(),
+        CustomerId = 1,
+        Type = "Email",
+        Content = "This is a test notification.",
+        TransactionStatus = true
+    };
+    
+    await databaseService.AddNotificationAsync(entity);
+    var notifications = await databaseService.GetAllNotificationsAsync();
+    return notifications;
+});
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
