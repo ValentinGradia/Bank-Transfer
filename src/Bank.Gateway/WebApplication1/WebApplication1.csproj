@@ -15,7 +15,6 @@
       <Folder Include="Api\Endpoint\" />
       <Folder Include="Application\External\" />
       <Folder Include="Application\Features\" />
-      <Folder Include="Domain\Constants\" />
       <Folder Include="Domain\Entities\" />
       <Folder Include="External\" />
     </ItemGroup>

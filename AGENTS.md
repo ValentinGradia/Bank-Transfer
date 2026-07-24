@@ -111,6 +111,86 @@ terraform destroy
 
 Test/development environment with free-tier resources and no always-on apps.
 
+## Microservice Architecture
+
+### Overview
+
+The system follows a **microservices architecture** with 5 independent services communicating asynchronously through Azure Service Bus. It uses the **Saga Pattern (Choreography-based)** for distributed transaction management - each service publishes events that trigger the next step, without a central orchestrator.
+
+### Services
+
+| Service | Project | Responsibility |
+|---------|---------|----------------|
+| **Gateway** | Bank.Gateway (WebApplication1) | API entry point. Receives external requests and publishes `transaction-initiated` to start the saga. |
+| **Transaction** | Bank.Transaction.WebAPI | Saga coordinator. Receives events from all services, tracks transaction state, and publishes commands to drive the flow forward. |
+| **Balance** | Bank.Balance.WebAPI | Handles balance checks and updates. Receives `balance-initiated`, validates/processes balance, and publishes `balance-confirmed` or `balance-failed`. Also receives transfer result notifications. |
+| **Transfer** | Bank.Transfer.WebAPI | Handles fund transfers. Receives `transfer-initiated`, executes the transfer, and publishes `transfer-confirmed` or `transfer-failed`. |
+| **Notification** | Bank.Notification.WebAPI | Sends notifications on transaction completion/failure. Subscribes to `transaction-completed` and `transaction-failed`. Uses Cosmos DB for persistence. |
+
+### Event-Driven Communication (Saga Choreography)
+
+All communication happens via **Azure Service Bus topics/subscriptions**. Services publish events to a shared topic; other services receive events through their own subscriptions.
+
+#### Event Flow
+
+```
+External Request
+       │
+       ▼
+┌──────────┐  transaction-initiated  ┌─────────────┐
+│ Gateway  │ ────────────────────────▶│ Transaction │
+└──────────┘                         └──────┬──────┘
+                                            │
+                              balance-initiated / transfer-initiated
+                                            │
+                          ┌─────────────────┼─────────────────┐
+                          ▼                 │                 ▼
+                   ┌──────────┐             │          ┌──────────┐
+                   │ Balance  │             │          │ Transfer │
+                   └────┬─────┘             │          └────┬─────┘
+                        │                   │               │
+           balance-confirmed/failed         │    transfer-confirmed/failed
+                        │                   │               │
+                        └──────┐  ◀────────┘  ─────────────┘
+                               ▼
+                        ┌─────────────┐  transaction-completed/failed  ┌──────────────┐
+                        │ Transaction │ ──────────────────────────────▶│ Notification │
+                        └─────────────┘                                └──────────────┘
+```
+
+#### Detailed Event Flow
+
+1. **Gateway** → publishes `transaction-initiated`
+2. **Transaction** receives `transaction-initiated` → publishes `balance-initiated` (and/or `transfer-initiated`)
+3. **Balance** receives `balance-initiated` → publishes `balance-confirmed` or `balance-failed`
+4. **Transaction** receives confirmation/failure → publishes `transfer-initiated`
+5. **Transfer** receives `transfer-initiated` → publishes `transfer-confirmed` or `transfer-failed`
+6. **Transaction** receives transfer result → publishes `transaction-completed` or `transaction-failed`
+7. **Transaction** also publishes `transfer-confirmed-balance` / `transfer-failed-balance` (for Balance to update final state)
+8. **Notification** receives `transaction-completed` or `transaction-failed`
+
+### Transaction States
+
+Managed via `CurrentStateConstants` (defined in Transaction, Balance, and Transfer):
+
+| State | Description |
+|-------|-------------|
+| `Pending` | Transaction in progress, waiting for downstream events |
+| `Completed` | Transaction succeeded |
+| `Canceled` | Transaction failed or was rolled back |
+
+### Constants Classes
+
+These constants ensure type-safe, centralized event names across the distributed system, preventing typos and making the event-driven flow maintainable.
+
+Each service defines constants for its publish/subscribe events:
+
+- **`SendSubscriptionConstants`** - Event names the service publishes to the Service Bus topic.
+- **`ReceivedSubscriptionsConstants`** - Event names the service subscribes to (filters from the topic).
+- **`CurrentStateConstants`** - Transaction lifecycle states used to track saga progress.
+
+> **Note:** They are currently created manually or via the .NET Service Bus SDK at runtime.
+
 ## User Secrets
 
 All 5 microservices use .NET User Secrets to store sensitive Service Bus credentials outside of source code. The `secrets.json` file is stored locally at `%APPDATA%\microsoft\UserSecrets\<UserSecretsId>\secrets.json`.
