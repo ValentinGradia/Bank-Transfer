@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Application\Handlers\" />
       <Folder Include="Domain\Entities\" />
     </ItemGroup>
 
