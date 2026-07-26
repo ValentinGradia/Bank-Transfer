@@ -245,6 +245,18 @@ Each service defines constants for its publish/subscribe events:
 
 > **Note:** They are currently created manually or via the .NET Service Bus SDK at runtime.
 
+### ProcessService 
+
+The `ProcessService` acts as a **router** that receives raw events and decides what to do with each one. It receives two parameters:
+- `message` — the raw JSON body from Service Bus
+- `subscription` — which event triggered it (e.g., `balance-confirmed`)
+
+The typical flow inside `Execute()`:
+
+1. **Deserialize** the JSON into a C# object
+2. **Route** based on the subscription name (which event)
+3. **Process** according to the event
+
 ## User Secrets
 
 All 5 microservices use .NET User Secrets to store sensitive Service Bus credentials outside of source code. The `secrets.json` file is stored locally at `%APPDATA%\microsoft\UserSecrets\<UserSecretsId>\secrets.json`.
