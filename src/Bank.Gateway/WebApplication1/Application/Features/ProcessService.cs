@@ -24,6 +24,6 @@ public class ProcessService : IProcessService
             CustomerId = model.CustomerId
         };
         
-        await _serviceBusSender.Execute(model, SendSubscriptionConstants.TRANSACTION_INITIATED);
+        await _serviceBusSender.Execute(model, SendToTopicConstants.TRANSACTION_INITIATED);
     }
 }

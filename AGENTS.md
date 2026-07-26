@@ -131,6 +131,60 @@ The system follows a **microservices architecture** with 5 independent services 
 
 All communication happens via **Azure Service Bus topics/subscriptions**. Services publish events to a shared topic; other services receive events through their own subscriptions.
 
+#### How Subscription Filters Work
+
+All microservices share a single topic (`bank-transfer`). Each subscription on this topic has a **correlation filter** that matches on the message label (event name). When a service publishes a message with a specific label, Azure Service Bus checks every subscription's filter:
+
+- If the filter matches → message is delivered to that subscription
+- If the filter doesn't match → message is ignored by that subscription
+
+**Example:**
+```
+Topic: bank-transfer
+    │
+    ├── Subscription: "balance-initiated"
+    │   Filter: sys.Label = 'balance-initiated'
+    │
+    ├── Subscription: "transfer-confirmed"
+    │   Filter: sys.Label = 'transfer-confirmed'
+    │
+    └── ...
+```
+
+When Transaction publishes a message with label `balance-initiated`, only the `balance-initiated` subscription receives it. Other subscriptions on the same topic ignore it.
+
+**How sending works:**
+
+When a service sends a message, it doesn't specify which subscription to deliver to. It sends to the **topic** with a **label** (event name). The sender sets the label via `busMessage.Subject`:
+
+```csharp
+busMessage.Subject = subscriptionName; // e.g., "transaction-initiated"
+```
+
+Azure Service Bus then checks every subscription's filter and delivers to the matching ones.
+
+**Example (Gateway sends `transaction-initiated`):**
+```
+Gateway sends message to topic "bank-transfer"
+    │
+    │  busMessage.Subject = "transaction-initiated"
+    ▼
+Azure Service Bus checks all subscriptions on "bank-transfer":
+    │
+    ├── Subscription "transaction-initiated" → filter matches → DELIVERED
+    ├── Subscription "balance-initiated"     → filter doesn't match → IGNORED
+    ├── Subscription "transfer-confirmed"    → filter doesn't match → IGNORED
+    └── ...
+```
+
+**This is how choreography works step by step:**
+1. Gateway publishes `transaction-initiated` → only Transaction's subscription matches
+2. Transaction publishes `balance-initiated` → only Balance's subscription matches
+3. Balance publishes `balance-confirmed` → only Transaction's subscription matches
+4. And so on...
+
+Each service is both a **listener** (reads from its subscriptions) and a **publisher** (sends events to the topic). The event names themselves are the coordination — no central orchestrator tells services what to do.
+
 #### Event Flow
 
 ```
@@ -185,8 +239,8 @@ These constants ensure type-safe, centralized event names across the distributed
 
 Each service defines constants for its publish/subscribe events:
 
-- **`SendSubscriptionConstants`** - Event names the service publishes to the Service Bus topic.
-- **`ReceivedSubscriptionsConstants`** - Event names the service subscribes to (filters from the topic).
+- **`SendToTopicConstants`** - Event names the service publishes to the Service Bus topic.
+- **`ReceiveFromTopicConstants`** - Event names the service subscribes to (filters from the topic).
 - **`CurrentStateConstants`** - Transaction lifecycle states used to track saga progress.
 
 > **Note:** They are currently created manually or via the .NET Service Bus SDK at runtime.

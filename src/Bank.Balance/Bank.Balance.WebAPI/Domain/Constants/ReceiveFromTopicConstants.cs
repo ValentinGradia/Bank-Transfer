@@ -1,6 +1,6 @@
 ﻿namespace Bank.Balance.WebAPI.Domain.Constants;
 
-public class ReceivedSubscriptionsConstants
+public class ReceiveFromTopicConstants
 {
     public const string BALANCE_INITIATED = "balance-initiated";
     public const string TRANSFER_CONFIRMED_BALANCE = "transfer-confirmed-balance";

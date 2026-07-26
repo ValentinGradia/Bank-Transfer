@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Bank.Balance.WebAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0f8af9e7d3876b7ad71a0038d10d940d39f1a03c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bb669939708499772fd2a2ccc14f4508fe7f3832")]
 [assembly: System.Reflection.AssemblyProductAttribute("Bank.Balance.WebAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Bank.Balance.WebAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

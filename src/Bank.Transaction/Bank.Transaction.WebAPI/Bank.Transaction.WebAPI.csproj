@@ -8,6 +8,7 @@
   </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.20.2" />
         <PackageReference Include="MediatR" Version="14.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
@@ -16,7 +17,6 @@
 
     <ItemGroup>
       <Folder Include="Application\External\" />
-      <Folder Include="External\" />
     </ItemGroup>
 
 </Project>

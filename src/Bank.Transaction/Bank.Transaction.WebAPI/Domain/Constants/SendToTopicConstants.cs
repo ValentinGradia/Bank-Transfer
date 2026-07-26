@@ -1,6 +1,6 @@
 ﻿namespace Bank.Transaction.WebAPI.Domain.Constants;
 
-public class SendSubscriptionConstants
+public class SendToTopicConstants // SendToTopicConstants
 {       
     public const string BALANCE_INITIATED = "balance-initiated";
     public const string TRANSACTION_FAILED = "transaction-failed";
