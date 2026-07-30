@@ -1,7 +1,9 @@
 using Bank.Transaction.WebAPI.Application.Database;
+using Bank.Transaction.WebAPI.Application.External;
 using Bank.Transaction.WebAPI.Application.Features.Process;
 using Bank.Transaction.WebAPI.Application.Handlers;
 using Bank.Transaction.WebAPI.External.ServiceBusReceive;
+using Bank.Transaction.WebAPI.External.ServiceBusSender;
 using Bank.Transaction.WebAPI.Persistence.Database;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +18,7 @@ builder.Services.AddDbContext<DatabaseService>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BankTransactionConnection")));
 builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 builder.Services.AddScoped<IProcessService, ProcessService>();
+builder.Services.AddSingleton<IServiceBusSenderService, ServiceBusSenderService>();
 
 builder.Services.AddHostedService<ServiceBusReceiveService>();
 
