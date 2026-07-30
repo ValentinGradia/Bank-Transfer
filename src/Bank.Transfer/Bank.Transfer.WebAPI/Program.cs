@@ -14,11 +14,6 @@ builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 
 var app = builder.Build();
 
-app.MapGet("/transfer", async ([FromServices] IDatabaseService databaseService) =>
-{
-    var data = await databaseService.Transfer.ToListAsync();
-    return data;
-});
 
 
 app.Run();

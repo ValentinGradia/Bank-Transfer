@@ -26,10 +26,4 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Pro
 
 var app = builder.Build();
 
-app.MapGet("/transaction", async ([FromServices] IDatabaseService databaseService) =>
-{
-    var data = await databaseService.Transaction.ToListAsync();
-    return data;
-});
- 
 app.Run();

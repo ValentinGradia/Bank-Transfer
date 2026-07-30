@@ -13,10 +13,4 @@ builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 
 var app = builder.Build();
 
-app.MapGet("/balance", async ([FromServices] IDatabaseService databaseService) =>
-{
-    var data = await databaseService.Balance.ToListAsync();
-    return data;
-});
-
 app.Run();
