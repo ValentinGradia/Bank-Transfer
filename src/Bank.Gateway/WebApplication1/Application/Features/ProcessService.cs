@@ -17,13 +17,13 @@ public class ProcessService : IProcessService
     {
         var modelEvent = new 
         {
-            CorrleationId = Guid.NewGuid().ToString(),
+            CorrelationId = Guid.NewGuid().ToString(),
             Amount = model.Amount,
             SourceAccount = model.SourceAccount,
-            Destination = model.SourceAccount,
+            DestinationAccount = model.SourceAccount,
             CustomerId = model.CustomerId
         };
         
-        await _serviceBusSender.Execute(model, SendToTopicConstants.TRANSACTION_INITIATED);
+        await _serviceBusSender.Execute(modelEvent, SendToTopicConstants.TRANSACTION_INITIATED);
     }
 }

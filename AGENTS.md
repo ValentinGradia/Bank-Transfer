@@ -4,6 +4,22 @@
 
 This project defines Azure infrastructure for a bank transaction system using Terraform with the AzureRM provider.
 
+## AI Workflow (Spec-Driven Development)
+
+All features follow a spec-driven workflow. Decisions are made before code is written.
+
+**Agents:**
+- `spec` — Generates a specification from a feature idea
+- `reviewer` — Reviews specs (scope, tasks, constraints) and code (correctness, consistency)
+- `implementer` — Executes a single task from an approved spec
+
+**Loop:**
+```
+spec (generate) → reviewer (review spec) → user (approve) → store → implementer (task) → reviewer (review code) → user (approve) → commit → repeat
+```
+
+Specs are stored in `.opencode/specs/`. The user acts as orchestrator — every step requires approval before moving forward. Each task runs in a fresh agent session to avoid context drift.
+
 ## Configuration
 
 - **Terraform Version**: >= 1.2

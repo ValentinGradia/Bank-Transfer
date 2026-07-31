@@ -1,6 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{05B401A6-10D8-472E-AC4D-E2F1FE84254A}"
+	ProjectSection(SolutionItems) = preProject
+		src\LESSON.MD = src\LESSON.MD
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Bank.Gateway", "1. Bank.Gateway", "{0EF3F2E5-E864-47D7-9EC6-DFB15989A33E}"
 EndProject

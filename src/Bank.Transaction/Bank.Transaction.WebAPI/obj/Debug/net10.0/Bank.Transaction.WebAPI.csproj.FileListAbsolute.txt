@@ -73,3 +73,9 @@ C:\Users\valen\RiderProjects\Bank\src\Bank.Transaction\Bank.Transaction.WebAPI\o
 C:\Users\valen\RiderProjects\Bank\src\Bank.Transaction\Bank.Transaction.WebAPI\obj\Debug\net10.0\Bank.Transaction.WebAPI.pdb
 C:\Users\valen\RiderProjects\Bank\src\Bank.Transaction\Bank.Transaction.WebAPI\obj\Debug\net10.0\Bank.Transaction.WebAPI.genruntimeconfig.cache
 C:\Users\valen\RiderProjects\Bank\src\Bank.Transaction\Bank.Transaction.WebAPI\obj\Debug\net10.0\ref\Bank.Transaction.WebAPI.dll
+C:\Users\valen\RiderProjects\Bank\src\Bank.Transaction\Bank.Transaction.WebAPI\bin\Debug\net10.0\Azure.Core.Amqp.dll
+C:\Users\valen\RiderProjects\Bank\src\Bank.Transaction\Bank.Transaction.WebAPI\bin\Debug\net10.0\Azure.Messaging.ServiceBus.dll
+C:\Users\valen\RiderProjects\Bank\src\Bank.Transaction\Bank.Transaction.WebAPI\bin\Debug\net10.0\MediatR.dll
+C:\Users\valen\RiderProjects\Bank\src\Bank.Transaction\Bank.Transaction.WebAPI\bin\Debug\net10.0\MediatR.Contracts.dll
+C:\Users\valen\RiderProjects\Bank\src\Bank.Transaction\Bank.Transaction.WebAPI\bin\Debug\net10.0\Microsoft.Azure.Amqp.dll
+C:\Users\valen\RiderProjects\Bank\src\Bank.Transaction\Bank.Transaction.WebAPI\bin\Debug\net10.0\Newtonsoft.Json.dll

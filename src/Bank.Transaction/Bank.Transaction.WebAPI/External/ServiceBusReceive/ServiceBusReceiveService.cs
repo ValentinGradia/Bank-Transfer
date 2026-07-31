@@ -65,8 +65,9 @@ public class ServiceBusReceiveService : BackgroundService //Due to the fact that
     //Capture the message / event and send it to the mediator to be processed by the appropriate handler.
     private async Task Process(ProcessMessageEventArgs args, string subscription)
     {
+        
         string body = args.Message.Body.ToString();
-
+        
         await _mediator.Publish(new ProcessEvent(body, subscription));//This reaches ProcessHandler
         await args.CompleteMessageAsync(args.Message); //Tell Service Bus "I processed this message               
         //successfully" — removes it from the queue so it won't be delivered again
