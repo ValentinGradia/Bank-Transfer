@@ -66,10 +66,18 @@ public class ProcessService : IProcessService
 
     private async Task TransferConfirmedBalance(string message)
     {
+        var entity = JsonConvert.DeserializeObject<BalanceEntity>(message);
+        entity.CurrentState = CurrentStateConstants.COMPLETED;
+
+        await ProcessDatabase(entity);
     }
 
     private async Task TransferFailedBalance(string message)
     {
+        var entity = JsonConvert.DeserializeObject<BalanceEntity>(message);
+        entity.CurrentState = CurrentStateConstants.CANCELED;
+
+        await ProcessDatabase(entity);
     }
 
     public async Task<BalanceEntity> ProcessDatabase(BalanceEntity entity)
@@ -89,6 +97,7 @@ public class ProcessService : IProcessService
             existEntity.BalanceDate = DateTime.UtcNow;
             existEntity.CurrentState = entity.CurrentState;
             _databaseService.Balance.Update(existEntity);
+            await _databaseService.SaveAsync();
             return existEntity;
         }
     }

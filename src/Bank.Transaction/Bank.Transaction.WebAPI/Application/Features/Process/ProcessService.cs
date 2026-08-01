@@ -121,12 +121,44 @@ public class ProcessService : IProcessService
 
     private async Task TransferConfirmed(string message)
     {
+        var entity = JsonConvert.DeserializeObject<TransactionEntity>(message);
+        entity.CurrentState = CurrentStateConstants.COMPLETED;
         
+        var saveEntity = await ProcessDatabase(entity);
+        
+        var eventModel = new
+        {
+            saveEntity.CorrelationId,
+            saveEntity.Amount,
+            saveEntity.CustomerId
+        };
+
+        // //MS Notification
+        // await _serviceBusSenderService.Execute(eventModel, SendToTopicConstants.TRANSACTION_COMPLETED);
+        
+        //MS Balance
+        await _serviceBusSenderService.Execute(eventModel, SendToTopicConstants.TRANSFER_CONFIRMED_BALANCE);
     }
 
     private async Task TransferFailed(string message)
     {
+        var entity = JsonConvert.DeserializeObject<TransactionEntity>(message);
+        entity.CurrentState = CurrentStateConstants.CANCELED;
         
+        var saveEntity = await ProcessDatabase(entity);
+        
+        var eventModel = new
+        {
+            saveEntity.CorrelationId,
+            saveEntity.Amount,
+            saveEntity.CustomerId
+        };
+
+        //MS Notification
+        //await _serviceBusSenderService.Execute(eventModel, SendToTopicConstants.TRANSACTION_FAILED);
+        
+        //MS Balance
+        await _serviceBusSenderService.Execute(eventModel, SendToTopicConstants.TRANSFER_FAILED_BALANCE);
     }
 
     public async Task<TransactionEntity> ProcessDatabase(TransactionEntity entity)
@@ -146,6 +178,7 @@ public class ProcessService : IProcessService
             existEntity.TransactionDate = DateTime.UtcNow;
             existEntity.CurrentState = entity.CurrentState;
             _databaseService.Transaction.Update(existEntity);
+            await _databaseService.SaveAsync();
             return existEntity;
         }
     }
