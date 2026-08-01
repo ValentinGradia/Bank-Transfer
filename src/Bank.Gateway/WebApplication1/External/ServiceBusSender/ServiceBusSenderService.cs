@@ -1,14 +1,14 @@
-﻿using Azure.Messaging.ServiceBus;
+using Azure.Messaging.ServiceBus;
 using WebApplication1.Application.External;
 
-namespace WebApplication1.External;
+namespace WebApplication1.External.ServiceBusSender;
 
 public class ServiceBusSenderService : IServiceBusSenderService
 {
     private readonly ServiceBusClient _client;
     private readonly string _topicName;
 
-    public ServiceBusSenderService(IConfiguration configuration)        
+    public ServiceBusSenderService(IConfiguration configuration)
     {
         _client = new ServiceBusClient(configuration["SERVICEBUSCONSTR"]);
         _topicName = configuration["SERVICEBUSTOPIC"];
@@ -19,15 +19,15 @@ public class ServiceBusSenderService : IServiceBusSenderService
     public async Task Execute(object eventModel, string subscriptionName)
     {
         //We create a sender to send messages to the topic
-        await using ServiceBusSender sender = _client.CreateSender(_topicName);
-        
+        await using Azure.Messaging.ServiceBus.ServiceBusSender sender = _client.CreateSender(_topicName);
+
         //We serialize the event model to JSON and create a ServiceBusMessage
         string message = System.Text.Json.JsonSerializer.Serialize(eventModel);
         ServiceBusMessage busMessage = new ServiceBusMessage(message);
-        
+
         busMessage.ContentType = "application/json";
         busMessage.Subject = subscriptionName; //In the subject we will put the subscription name, so that the subscribers can filter the messages by subject.
-        
+
         await sender.SendMessageAsync(busMessage);
     }
 }

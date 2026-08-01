@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Bank.Notification.WebAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a944d92572ece3e08cbc154f4bf63a39e9de4641")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c73e25533d020f61c5cff4f6561cdf7a0f125a2")]
 [assembly: System.Reflection.AssemblyProductAttribute("Bank.Notification.WebAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Bank.Notification.WebAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

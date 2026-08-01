@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Bank.Transfer.WebAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e5077cc6c50472665815c375cf58566701759692")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8e4d4dce67949af169e2f2a469fc08e7441f2294")]
 [assembly: System.Reflection.AssemblyProductAttribute("Bank.Transfer.WebAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Bank.Transfer.WebAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

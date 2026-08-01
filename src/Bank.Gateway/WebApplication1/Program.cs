@@ -1,7 +1,7 @@
 using WebApplication1.Application.External;
 using WebApplication1.Application.Features;
 using WebApplication1.Application.Models;
-using WebApplication1.External;
+using WebApplication1.External.ServiceBusSender;
 
 var builder = WebApplication.CreateBuilder(args);
 
