@@ -61,6 +61,8 @@ public class ProcessService : IProcessService
                 saveEntity.CustomerId
             };
 
+            
+            //MS Balance
             await _serviceBusSenderService.Execute(eventModel, SendToTopicConstants.BALANCE_INITIATED);
         }
         else
@@ -71,17 +73,49 @@ public class ProcessService : IProcessService
                 saveEntity.CustomerId
             };
 
+            //MS Notification
             await _serviceBusSenderService.Execute(eventModel, SendToTopicConstants.TRANSACTION_FAILED);
         }
     }
 
     private async Task BalanceConfirmed(string message)
     {
+        var entity = JsonConvert.DeserializeObject<TransactionEntity>(message);
+        entity.CurrentState = CurrentStateConstants.PENDING;
+        
+        var saveEntity = await ProcessDatabase(entity);
+        
+        var eventModel = new
+        {
+            saveEntity.CorrelationId,
+            saveEntity.Amount,
+            saveEntity.SourceAccount,
+            saveEntity.DestinationAccount,
+            saveEntity.CustomerId
+        };
+
+        
+        //MS Transfer
+        //await _serviceBusSenderService.Execute(eventModel, SendToTopicConstants.TRANSFER_INITIATED);
         
     }
 
     private async Task BalanceFailed(string message)
     {
+        var entity = JsonConvert.DeserializeObject<TransactionEntity>(message);
+        entity.CurrentState = CurrentStateConstants.CANCELED;
+        
+        var saveEntity = await ProcessDatabase(entity);
+        
+        var eventModel = new
+        {
+            saveEntity.CorrelationId,
+            saveEntity.Amount,
+            saveEntity.CustomerId
+        };
+
+        //MS Notification
+        await _serviceBusSenderService.Execute(eventModel, SendToTopicConstants.TRANSACTION_FAILED);
         
     }
 

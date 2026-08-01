@@ -48,6 +48,7 @@ public class ProcessService : IProcessService
                 saveEntity.CustomerId,
             };
 
+            //MS Transaction
             await _serviceBusSenderService.Execute(eventModel, SendToTopicConstants.BALANCE_CONFIRMED);
         }
         else
@@ -58,6 +59,7 @@ public class ProcessService : IProcessService
                 saveEntity.CustomerId
             };
 
+            //MS Transaction
             await _serviceBusSenderService.Execute(eventModel, SendToTopicConstants.BALANCE_FAILED);
         }
     }

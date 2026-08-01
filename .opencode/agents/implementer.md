@@ -23,6 +23,7 @@ Step 4 of spec-driven development. The spec has been reviewed and approved (step
 
 ## Rules
 
+- Read AGENTS.md and LESSON.MD for context and methodology
 - **Only this task** — ignore all other tasks in the spec
 - **Only files listed in the task** — do not touch unlisted files
 - **No drive-by refactors** or additions

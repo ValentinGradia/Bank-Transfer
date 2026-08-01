@@ -71,6 +71,9 @@ Review a spec before it is stored and implemented.
 
 Review implemented code against the spec and project conventions.
 
+## Rule
+- Read AGENTS.md and LESSON.MD for context and methodology
+
 ### Checklist
 
 **Simplicity:**
