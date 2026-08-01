@@ -30,9 +30,8 @@ public class ProcessService : IProcessService
     private async Task TransferInitiated(string message)
     {
         var entity = JsonConvert.DeserializeObject<TransferEntity>(message);
-        entity.CurrentState = CurrentStateConstants.PENDING;
 
-        var saveEntity = await ProcessDatabase(entity);
+        TransferEntity saveEntity = await ProcessDatabase(entity);
 
         if (saveEntity.Id != 0)
         {
@@ -58,24 +57,14 @@ public class ProcessService : IProcessService
         }
     }
 
+    //Due to the fact that we only  receive 1 message (transaction-initiated), there does not exist a database actualization (updateAsync). The processDatabase method is going to be called only once
+    //to store the transfer entity, no more. 
     public async Task<TransferEntity> ProcessDatabase(TransferEntity entity)
     {
-        var existEntity =
-            await _databaseService.Transfer.FirstOrDefaultAsync(x => x.CorrelationId == entity.CorrelationId);
-
-        if (existEntity == null)
-        {
-            entity.TransferDate = DateTime.UtcNow;
-            await _databaseService.Transfer.AddAsync(entity);
-            await _databaseService.SaveAsync();
-            return entity;
-        }
-        else
-        {
-            existEntity.TransferDate = DateTime.UtcNow;
-            existEntity.CurrentState = entity.CurrentState;
-            _databaseService.Transfer.Update(existEntity);
-            return existEntity;
-        }
+        entity.TransferDate = DateTime.UtcNow;
+        entity.CurrentState = CurrentStateConstants.COMPLETED;
+        await _databaseService.Transfer.AddAsync(entity);
+        await _databaseService.SaveAsync();
+        return entity;
     }
 }

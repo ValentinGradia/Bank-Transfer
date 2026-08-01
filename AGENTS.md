@@ -273,6 +273,81 @@ The typical flow inside `Execute()`:
 2. **Route** based on the subscription name (which event)
 3. **Process** according to the event
 
+### Message Lifecycle in a Microservice
+
+Every microservice (except Gateway, which is sender-only) follows the same message lifecycle pattern. A message passes through 4 components:
+
+```
+Service Bus Topic
+       │
+       ▼
+┌──────────────────────────┐
+│ ServiceBusReceiveService │  1. BackgroundService listens to subscriptions
+│ (External/)              │  2. Receives raw message from Service Bus
+└──────────┬───────────────┘  3. Publishes ProcessEvent via MediatR
+           │
+           ▼
+┌──────────────────────────┐
+│ ProcessHandler           │  4. INotificationHandler<ProcessEvent>
+│ (Application/Handlers/)  │  5. Creates a new DI scope per message
+└──────────┬───────────────┘  6. Resolves IProcessService in that scope
+           │
+           ▼
+┌──────────────────────────┐
+│ ProcessService           │  7. Routes by subscription name (event type)
+│ (Application/Features/)  │  8. Deserializes, processes, saves to DB
+└──────────┬───────────────┘  9. Calls IServiceBusSenderService to publish result
+           │
+           ▼
+┌──────────────────────────┐
+│ ServiceBusSenderService  │ 10. Serializes event model to JSON
+│ (External/)              │ 11. Sends to topic with event name as label
+└──────────────────────────┘
+```
+
+#### Component Responsibilities
+
+| Component | File Location | Lifetime | Role |
+|-----------|--------------|----------|------|
+| `ServiceBusReceiveService` | `External/ServiceBusReceive/` | HostedService (BackgroundService) | Listens to Service Bus subscriptions, receives messages, publishes `ProcessEvent` via MediatR |
+| `ProcessHandler` | `Application/Handlers/` | Singleton (MediatR default) | Receives `ProcessEvent`, creates a new DI scope to avoid captive dependency, resolves and calls `IProcessService` |
+| `IProcessService` | `Application/Features/Process/` | Scoped | Interface for the process service |
+| `ProcessService` | `Application/Features/Process/` | Scoped | Business logic: deserializes entity, processes event, saves to DB, publishes result via sender |
+| `IServiceBusSenderService` | `Application/External/` | Singleton | Interface for the sender |
+| `ServiceBusSenderService` | `External/ServiceBusSender/` | Singleton | Sends messages to Service Bus topic with event name as `Subject` label |
+
+#### Why ProcessHandler Creates a Scope
+
+`ProcessHandler` is registered as a **singleton** (MediatR default). `IProcessService` is **scoped** (needs a fresh instance per message for DB context freshness). A singleton cannot hold a scoped service directly — it would never be disposed (captive dependency). The solution: `ProcessHandler` uses `IServiceProvider.CreateScope()` to create an isolated scope per message, resolves `IProcessService` inside it, and lets the scope handle disposal.
+
+#### Message Flow Example
+
+```
+1. ServiceBusReceiveService receives "<event-name>" message
+2. Publishes ProcessEvent(body, "<event-name>") via MediatR
+3. ProcessHandler.Handle() creates scope, resolves IProcessService
+4. ProcessService.Execute() switches on "<event-name>"
+5. Deserializes entity, sets CurrentState = PENDING
+6. Saves to DB via IDatabaseService
+7. Calls ServiceBusSenderService.Execute() with "<result-event>"
+8. Sender publishes to topic with busMessage.Subject = event name
+9. Scope disposed, dependencies cleaned up
+```
+
+#### Files Per Microservice
+
+| File | Transaction | Balance | Transfer | Notification |
+|------|:-----------:|:-------:|:--------:|:------------:|
+| `External/ServiceBusReceive/ServiceBusReceiveService.cs` | ✓ | ✓ | ✓ | ✓ |
+| `External/ServiceBusSender/ServiceBusSenderService.cs` | ✓ | ✓ | ✓ | ✗ (no send) |
+| `Application/Handlers/ProcessHandler.cs` | ✓ | ✓ | ✓ | ✓ |
+| `Application/Features/Process/IProcessService.cs` | ✓ | ✓ | ✓ | ✓ |
+| `Application/Features/Process/ProcessService.cs` | ✓ | ✓ | ✓ | ✓ |
+| `Application/External/IServiceBusSenderService.cs` | ✓ | ✓ | ✓ | ✗ (no send) |
+| `Domain/Events/ProcessEvent.cs` | ✓ | ✓ | ✓ | ✓ |
+
+> **Note:** Gateway only sends (`ServiceBusSenderService`), never receives. Notification only receives, never sends.
+
 ## User Secrets
 
 All 5 microservices use .NET User Secrets to store sensitive Service Bus credentials outside of source code. The `secrets.json` file is stored locally at `%APPDATA%\microsoft\UserSecrets\<UserSecretsId>\secrets.json`.
