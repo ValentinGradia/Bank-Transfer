@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DatabaseService>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+    options.UseSqlServer(builder.Configuration["Database"]));
 builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 
 builder.Services.AddScoped<IProcessService, ProcessService>();

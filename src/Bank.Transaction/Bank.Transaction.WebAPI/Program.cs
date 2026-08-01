@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<DatabaseService>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("BankTransactionConnection")));
+    options.UseSqlServer(builder.Configuration["BankTransactionConnection"]));
 builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 builder.Services.AddScoped<IProcessService, ProcessService>();
 builder.Services.AddSingleton<IServiceBusSenderService, ServiceBusSenderService>();
