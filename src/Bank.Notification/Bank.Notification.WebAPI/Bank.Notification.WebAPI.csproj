@@ -8,6 +8,8 @@
   </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.20.2" />
+        <PackageReference Include="MediatR" Version="14.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
         <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.62.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
@@ -15,7 +17,6 @@
 
     <ItemGroup>
       <Folder Include="Application\External\" />
-      <Folder Include="Application\Features\" />
     </ItemGroup>
 
 </Project>
