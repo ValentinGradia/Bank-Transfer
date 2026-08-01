@@ -2,7 +2,7 @@
 using Bank.Balance.WebAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bank.Balance.WebAPI.Peristence.Database;
+namespace Bank.Balance.WebAPI.Persistence.Database;
 
 public class DatabaseService : DbContext, IDatabaseService //Implement the IDatabaseService interface to provide independency injection
 {

@@ -73,3 +73,9 @@ C:\Users\valen\RiderProjects\Bank\src\Bank.Balance\Bank.Balance.WebAPI\obj\Debug
 C:\Users\valen\RiderProjects\Bank\src\Bank.Balance\Bank.Balance.WebAPI\obj\Debug\net10.0\Bank.Balance.WebAPI.pdb
 C:\Users\valen\RiderProjects\Bank\src\Bank.Balance\Bank.Balance.WebAPI\obj\Debug\net10.0\Bank.Balance.WebAPI.genruntimeconfig.cache
 C:\Users\valen\RiderProjects\Bank\src\Bank.Balance\Bank.Balance.WebAPI\obj\Debug\net10.0\ref\Bank.Balance.WebAPI.dll
+C:\Users\valen\RiderProjects\Bank\src\Bank.Balance\Bank.Balance.WebAPI\bin\Debug\net10.0\Azure.Core.Amqp.dll
+C:\Users\valen\RiderProjects\Bank\src\Bank.Balance\Bank.Balance.WebAPI\bin\Debug\net10.0\Azure.Messaging.ServiceBus.dll
+C:\Users\valen\RiderProjects\Bank\src\Bank.Balance\Bank.Balance.WebAPI\bin\Debug\net10.0\MediatR.dll
+C:\Users\valen\RiderProjects\Bank\src\Bank.Balance\Bank.Balance.WebAPI\bin\Debug\net10.0\MediatR.Contracts.dll
+C:\Users\valen\RiderProjects\Bank\src\Bank.Balance\Bank.Balance.WebAPI\bin\Debug\net10.0\Microsoft.Azure.Amqp.dll
+C:\Users\valen\RiderProjects\Bank\src\Bank.Balance\Bank.Balance.WebAPI\bin\Debug\net10.0\Newtonsoft.Json.dll
