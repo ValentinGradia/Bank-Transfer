@@ -96,7 +96,7 @@ public class ProcessService : IProcessService
 
         
         //MS Transfer
-        //await _serviceBusSenderService.Execute(eventModel, SendToTopicConstants.TRANSFER_INITIATED);
+        await _serviceBusSenderService.Execute(eventModel, SendToTopicConstants.TRANSFER_INITIATED);
         
     }
 
